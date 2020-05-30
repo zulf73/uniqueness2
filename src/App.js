@@ -1,6 +1,19 @@
-import React from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+
+
+const ocean = [3, 3, 2, 2, 3];
+
+class VirtueList extends Component {
+
+
+  render() {
+    return (
+      "In the darkest night of your life, these are the virtues that will assist you."
+    )
+  }
+}
 
 function App() {
   return (
@@ -10,6 +23,11 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
+        <p>
+
+          Hello world.
+        </p>
+        <VirtueList />
         <a
           className="App-link"
           href="https://reactjs.org"
