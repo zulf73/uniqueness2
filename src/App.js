@@ -135,23 +135,25 @@ class VirtueList extends Component {
   constructor() {
     super();
 
-    const vCounter = 10;
+    const vCounter = 457;
     // connect to mongo and query
     var MongoClient = require('mongodb').MongoClient;
-    const uri = 'mongodb+srv://zulfahmed:snaggle41014@cluster0-3cmqe.mongodb.net/prod?w=1';
 
-    MongoClient.connect(uri, function (err, db) {
-      console.log('started')
-      if (err) throw err;
-      var query = { counter: vCounter };
-      db.collection("uniqueness").find(query).toArray(
-        function (err, item) {
-          if (err) throw err;
-          console.log(item);
-          for (var k in item) {
-            this.props[k] = item[k];
-          }
+    const uri = 'mongodb+srv://unique:unique@cluster0-3cmqe.mongodb.net/?retryWrites=true&w=majority';
+    var assert = require('assert')
+    MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, function (err, client) {
+      var db = client.db('prod');
+      /*
+      db.collection("uniqueness").count(function (err, count) {
+          console.log(err)
+          console.log(count);
           db.close();
+      });
+      */
+      db.collection("uniqueness").find({ counter: [vCounter] }).toArray(
+        function (err, item) {
+          console.log(item);
+          client.close();
         });
     });
   }
