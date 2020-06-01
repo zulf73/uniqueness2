@@ -2,172 +2,170 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-
-const { MongoClient } = require('mongodb');
-
-class VirtueList extends Component {
-
-  constructor() {
-    // connect to mongo and query
-    const uri = ""
-    const client = new MongoClient(uri);
-
-    try {
-      await client.connect();
-      var collection = client.prod.uniqueness;
-      collection.findOne({ counter: vCounter },
-        function (err, item) {
-          this.props.profile = item
-        }
-      );
-
-    });
-  });
-} catch (e) {
-  console.error(e);
-}
-
-  }
-
-list_of_virtues(){
-  vals = [
-    { props.profile.Assertiveness },
-    { props.profile.Captiousness },
-    { props.profile.Blunt },
-    { props.profile.SocialConfidence },
-    { props.profile.Forgiveness },
-    { props.profile.Stubbornness },
-    { props.profile.Narcissism },
-    { props.profile.Deviousness },
-    { props.profile.Consideration },
-    { props.profile.Empathy },
-    { props.profile.Introversion },
-    { props.profile.SocialDominance },
-    { props.profile.PeopleVsThings },
-    { props.profile.DisciplinedIsolation },
-    { props.profile.Affable },
-    { props.profile.Sociability },
-    { props.profile.SocialDependence },
-    { props.profile.IndependentMinded },
-    { props.profile.Aggression },
-    { props.profile.SensationSeeking },
-    { props.profile.StressResilience },
-    { props.profile.Antagonism },
-    { props.profile.Vigilance },
-    { props.profile.Optimism },
-    { props.profile.Surgency },
-    { props.profile.Vigor },
-    { props.profile.Frivolous },
-    { props.profile.Dysthymia },
-    { props.profile.EmotionalReactivity },
-    { props.profile.Negativity },
-    { props.profile.Callousness },
-    { props.profile.Psychopathy },
-    { props.vCounterprofile.ConflictedRelationships }
+function list_of_virtues(props) {
+  const vals = [
+    props.Assertiveness,
+    props.Captiousness,
+    props.Blunt,
+    props.SocialConfidence,
+    props.Forgiveness,
+    props.Stubbornness,
+    props.Narcissism,
+    props.Deviousness,
+    props.Consideration,
+    props.Empathy,
+    props.Introversion,
+    props.SocialDominance,
+    props.PeopleVsThings,
+    props.DisciplinedIsolation,
+    props.Affable,
+    props.Sociability,
+    props.SocialDependence,
+    props.IndependentMinded,
+    props.Affable,
+    props.Aggression,
+    props.SensationSeeking,
+    props.StressResilience,
+    props.Antagonism,
+    props.Vigilance,
+    props.Optimism,
+    props.Surgency,
+    props.Vigor,
+    props.Frivolous,
+    props.Dysthymia,
+    props.EmotionalReactivity,
+    props.Negativity,
+    props.Callousness,
+    props.Psychopathy,
+    props.counter,
+    props.ConflictedRelationships
   ]
 
 
-  const listItems = numbers.map((number) =>
-    <li>{number}</li>
+  const tnames = [
+    "Assertiveness",
+    "Captiousness",
+    "Blunt",
+    "SocialConfidence",
+    "Forgiveness",
+    "Stubbornness",
+    "Narcissism",
+    "Deviousness",
+    "Consideration",
+    "Empathy",
+    "Introversion",
+    "SocialDominance",
+    "PeopleVsThings",
+    "DisciplinedIsolation",
+    "Autonomy",
+    "Affable",
+    "Sociability",
+    "SocialDependence",
+    "IndependentMinded",
+    "Aggression",
+    "SensationSeeking",
+    "StressResilience",
+    "Antagonism",
+    "Vigilance",
+    "Optimism",
+    "Surgency",
+    "Vigor",
+    "Frivolous",
+    "Dysthymia",
+    "EmotionalReactivity",
+    "Negativity",
+    "Callousness",
+    "Psychopathy",
+    "ConflictedRelationships",
+    "NervousAnxiety",
+    "Inferiority",
+    "Planfulness",
+    "PracticalVsImaginative",
+    "Impulse Control",
+    "Caution",
+    "Orderliness",
+    "Detail Conscious",
+    "Discipline",
+    "Spontaneity",
+    "Competence",
+    "Unconventionality",
+    "Traditionalism",
+    "Intolerance",
+    "Liberalism",
+    "Punitiveness",
+    "Simplicity",
+    "Dishonest-Opportunism",
+    "Novelty Seeking",
+    "Resilience",
+    "Endurance",
+    "AchievementStriving",
+    "Sensitivity",
+    "ToleranceForAmbiguity",
+    "Prejudice",
+    "Abstractness",
+    "Curiosity",
+    "AestheticInterests",
+    "CognitiveInterests",
+    "Creativity",
+    "Absorption",
+    "Fantasy",
+    "Perserverance",
+    "Anxiety",
+    "Worry",
+    "Depression",
+    "Rumination",
+    "Anger",
+    "Embarrassment"
+  ]
 
-
-  tnames = [
-      "Assertiveness",
-      "Captiousness",
-      "Blunt",
-      "SocialConfidence",
-      "Forgiveness",
-      "Stubbornness",
-      "Narcissism",
-      "Deviousness",
-      "Consideration",
-      "Empathy",
-      "Introversion",
-      "SocialDominance",
-      "PeopleVsThings",
-      "DisciplinedIsolation",
-      "Autonomy",
-      "Affable",
-      "Sociability",
-      "SocialDependence",
-      "IndependentMinded",
-      "Aggression",
-      "SensationSeeking",
-      "StressResilience",
-      "Antagonism",
-      "Vigilance",
-      "Optimism",
-      "Surgency",
-      "Vigor",
-      "Frivolous",
-      "Dysthymia",
-      "EmotionalReactivity",
-      "Negativity",
-      "Callousness",
-      "Psychopathy",
-      "ConflictedRelationships",
-      "NervousAnxiety",
-      "Inferiority",
-      "Planfulness",
-      "PracticalVsImaginative",
-      "Impulse Control",
-      "Caution",
-      "Orderliness",
-      "Detail Conscious",
-      "Discipline",
-      "Spontaneity",
-      "Competence",
-      "Unconventionality",
-      "Traditionalism",
-      "Intolerance",
-      "Liberalism",
-      "Punitiveness",
-      "Simplicity",
-      "Dishonest-Opportunism",
-      "Novelty Seeking",
-      "Resilience",
-      "Endurance",
-      "AchievementStriving",
-      "Sensitivity",
-      "ToleranceForAmbiguity",
-      "Prejudice",
-      "Abstractness",
-      "Curiosity",
-      "AestheticInterests",
-      "CognitiveInterests",
-      "Creativity",
-      "Absorption",
-      "Fantasy",
-      "Perserverance",
-      "Anxiety",
-      "Worry",
-      "Depression",
-      "Rumination",
-      "Anger",
-      "Embarrassment"
-    ]
-  
   var chosen_list = []
 
+  const thresh = 0.5;
   var i;
   for (i = 0; i < tnames.length; i++) {
     if (vals[i] > thresh) {
       chosen_list.push(tnames[i])
     }
   }
-  return (chosen)
+  return (chosen_list)
 }
-render() {
-  vals = list_of_virtues()
-  const listItems = vals.map((number) =>
-    <li>{number}</li>
-  return (
-    <div>
-      "In the darkest night of your life, these are the virtues that will assist you."
-      <ul>{listitems}</ul>
-    </div>
-  )
-}
+
+class VirtueList extends Component {
+
+  constructor() {
+    super();
+
+    const vCounter = 10;
+    // connect to mongo and query
+    var MongoClient = require('mongodb').MongoClient;
+    const uri = 'mongodb+srv://zulfahmed:snaggle41014@cluster0-3cmqe.mongodb.net/prod?w=1';
+
+    MongoClient.connect(uri, function (err, db) {
+      console.log('started')
+      if (err) throw err;
+      var query = { counter: vCounter };
+      db.collection("uniqueness").find(query).toArray(
+        function (err, item) {
+          if (err) throw err;
+          console.log(item);
+          for (var k in item) {
+            this.props[k] = item[k];
+          }
+          db.close();
+        });
+    });
+  }
+  render() {
+    var vals = list_of_virtues(this.props)
+    const listItems = vals.map((number) =>
+      <li>{number}</li>)
+    return (
+      <div>
+        "In the darkest night of your life, these are the virtues that will assist you."
+        < ul > {listItems}</ul >
+      </div >
+    )
+  }
 }
 
 class IndividualMyth extends Component {
