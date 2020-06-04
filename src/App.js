@@ -2,43 +2,43 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function list_of_virtues(props) {
-  const vals = [
-    props.Assertiveness,
-    props.Captiousness,
-    props.Blunt,
-    props.SocialConfidence,
-    props.Forgiveness,
-    props.Stubbornness,
-    props.Narcissism,
-    props.Deviousness,
-    props.Consideration,
-    props.Empathy,
-    props.Introversion,
-    props.SocialDominance,
-    props.PeopleVsThings,
-    props.DisciplinedIsolation,
-    props.Affable,
-    props.Sociability,
-    props.SocialDependence,
-    props.IndependentMinded,
-    props.Affable,
-    props.Aggression,
-    props.SensationSeeking,
-    props.StressResilience,
-    props.Antagonism,
-    props.Vigilance,
-    props.Optimism,
-    props.Surgency,
-    props.Vigor,
-    props.Frivolous,
-    props.Dysthymia,
-    props.EmotionalReactivity,
-    props.Negativity,
-    props.Callousness,
-    props.Psychopathy,
-    props.counter,
-    props.ConflictedRelationships
+function list_of_virtues(x) {
+  var vals = [
+    x["Assertiveness"],
+    x["Captiousness"],
+    x["Blunt"],
+    x["SocialConfidence"],
+    x["Forgiveness"],
+    x["Stubbornness"],
+    x["Narcissism"],
+    x["Deviousness"],
+    x["Consideration"],
+    x["Empathy"],
+    x["Introversion"],
+    x["SocialDominance"],
+    x["PeopleVsThings"],
+    x["DisciplinedIsolation"],
+    x["Affable"],
+    x["Sociability"],
+    x["SocialDependence"],
+    x["IndependentMinded"],
+    x["Affable"],
+    x["Aggression"],
+    x["SensationSeeking"],
+    x["StressResilience"],
+    x["Antagonism"],
+    x["Vigilance"],
+    x["Optimism"],
+    x["Surgency"],
+    x["Vigor"],
+    x["Frivolous"],
+    x["Dysthymia"],
+    x["EmotionalReactivity"],
+    x["Negativity"],
+    x["Callousness"],
+    x["Psychopathy"],
+    x["counter"],
+    x["ConflictedRelationships"]
   ]
 
 
@@ -130,41 +130,111 @@ function list_of_virtues(props) {
   return (chosen_list)
 }
 
+
+function getMongoQuery2(vCounter) {
+  // connect to mongo and query
+  var MongoClient = require('mongodb').MongoClient;
+  var ans;
+  const uri = 'mongodb+srv://unique:unique@cluster0-3cmqe.mongodb.net/?retryWrites=true&w=majority';
+  //const uri = 'mongodb+srv://unique:unique@cluster0-3cmqe.mongodb.net';
+  var assert = require('assert')
+  MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, function (err, client) {
+
+    console.log(err);
+
+    var db = client.db('prod');
+    /*
+    db.collection("uniqueness").count(function (err, count) {
+        console.log(err)
+        console.log(count);
+        db.close();
+    });
+    */
+
+    db.collection("uniqueness").find({ counter: [vCounter] }).toArray(
+      function (err, item) {
+        console.log(item);
+        ans = item
+        client.close();
+      });
+  });
+  return (ans);
+}
+
+
+function find_uniqueness_doc_old(ncounter) {
+  const http = require('http');
+  const port = 8007;
+  const query_server = 'http://localhost:' + port + '/?counter=' + ncounter;
+  var ans = null;
+  http.get(query_server, (resp) => {
+    let data = '';
+
+    
+    // A chunk of data has been recieved.
+    resp.on('data', (chunk) => {
+      data += chunk;
+    });
+
+    // The whole response has been received. Print out the result.
+    resp.on('end', () => {
+      ans = data;
+      console.log(ans);
+    });
+
+  }).on("error", (err) => {
+    console.log("Error: " + err.message);
+  });
+  console.log('once again the value is');
+  console.log(ans);
+  return (ans);
+}
+
+
+function find_uniqueness_doc(ncounter) {
+  const port = 8007;
+  const query_server = 'http://localhost:' + port + '/?counter=' + ncounter;
+  const axios = require('axios');
+  var ans = new Promise((resolve, reject) => {
+
+    axios.get(query_server)
+      .then((r) => {
+        ans = r.data;
+        resolve(ans);
+      });
+  });
+  return (ans);
+}
+
 class VirtueList extends Component {
 
   constructor() {
     super();
+  }
+
+  render() {
 
     const vCounter = 457;
-    // connect to mongo and query
-    var MongoClient = require('mongodb').MongoClient;
+    var x = find_uniqueness_doc(vCounter);
+    var dJSON = require('dirty-json');
+    var y = {};
+    x.then( (d) => { 
+      var y = dJSON.parse(d);
+      console.log('--- just before print --');
+      var vals = list_of_virtues(y);
+      var valkeys = Object.keys(vals);
+    //console.log(vals);
 
-    const uri = 'mongodb+srv://unique:unique@cluster0-3cmqe.mongodb.net/?retryWrites=true&w=majority';
-    var assert = require('assert')
-    MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, function (err, client) {
-      var db = client.db('prod');
-      /*
-      db.collection("uniqueness").count(function (err, count) {
-          console.log(err)
-          console.log(count);
-          db.close();
-      });
-      */
-      db.collection("uniqueness").find({ counter: [vCounter] }).toArray(
-        function (err, item) {
-          console.log(item);
-          client.close();
-        });
+      const listItems = valskeys.map((number) =>
+        <li>{number}</li>);
     });
-  }
-  render() {
-    var vals = list_of_virtues(this.props)
-    const listItems = vals.map((number) =>
-      <li>{number}</li>)
+    
     return (
       <div>
         "In the darkest night of your life, these are the virtues that will assist you."
-        < ul > {listItems}</ul >
+        
+        
+        <p>{listItems}</p>
       </div >
     )
   }
